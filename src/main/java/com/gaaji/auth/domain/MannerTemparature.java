@@ -8,4 +8,10 @@ public class MannerTemparature {
 
     private double temparature;
 
+    private MannerTemparature(double temparature) {
+        this.temparature = temparature;
+    }
+    public static MannerTemparature of(double temparature){
+        return new MannerTemparature(temparature);
+    }
 }

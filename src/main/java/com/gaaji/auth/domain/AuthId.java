@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Embeddable;
 import javax.persistence.Id;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable @NoArgsConstructor
+@Embeddable @NoArgsConstructor @Getter
 public class AuthId implements Serializable {
 
     @Id
@@ -27,5 +28,13 @@ public class AuthId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    private AuthId(String id) {
+        this.id = id;
+    }
+
+    public static AuthId of(String id) {
+        return new AuthId(id);
     }
 }
