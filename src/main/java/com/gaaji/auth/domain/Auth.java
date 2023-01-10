@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity @NoArgsConstructor
@@ -21,12 +22,28 @@ public class Auth {
     @Embedded
     private MannerTemparature mannerTemparature;
 
-    public void registerNickname(){
 
+    @Builder
+    private Auth(AuthId id, String nickname, PlatformInfo platformInfo,
+            MannerTemparature mannerTemparature) {
+        this.id = id;
+        this.nickname = nickname;
+        this.platformInfo = platformInfo;
+        this.mannerTemparature = mannerTemparature;
     }
 
-    public static Auth signUp(){
-        return null;
+    public static Auth signUp(String id, PlatformType type, String email){
+        return Auth.builder()
+                .id(AuthId.of(id))
+                .nickname("익명")
+                .platformInfo(PlatformInfo.of(type,email))
+                .mannerTemparature(MannerTemparature.of(36.5))
+                .build();
     }
-
+    public void registerNickname(String nickname){
+        this.nickname = nickname;
+    }
+    public String getAuthIdForToken(){
+        return id.getId();
+    }
 }
