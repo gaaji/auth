@@ -1,4 +1,4 @@
-package com.gaaji.auth.applicationservice;
+package com.gaaji.auth.oauth;
 
 import com.gaaji.auth.domain.PlatformType;
 import java.util.Map;

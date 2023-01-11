@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaAuthRepository extends JpaRepository<Auth, AuthId> {
 
-    Optional<Auth> findAuthByPlatformInfo_PlatformEmailAndPlatformInfo_PlatformType(PlatformType type, String platformEmail);
+    Optional<Auth> findAuthByPlatformInfo_PlatformEmailAndPlatformInfo_PlatformType( String platformEmail,PlatformType type);
 
-    Optional<Auth> findAuthByPlatformInfo(PlatformType type, String platformEmail);
+//    Optional<Auth> findAuthByPlatformInfo(PlatformType type, String platformEmail);
 }
