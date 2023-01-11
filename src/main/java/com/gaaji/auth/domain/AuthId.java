@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Embeddable @NoArgsConstructor @Getter
 public class AuthId implements Serializable {
 
-    @Id
+
     private String id;
 
     @Override

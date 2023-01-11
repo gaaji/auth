@@ -19,7 +19,7 @@ public class AuthRepositoryImpl implements AuthRepository{
 
     @Override
     public Optional<Auth> findByPlatformInfo(PlatformType type, String email) {
-        return jpaAuthRepository.findAuthByPlatformInfo_PlatformEmailAndPlatformInfo_PlatformType(type, email);
+        return jpaAuthRepository.findAuthByPlatformInfo_PlatformEmailAndPlatformInfo_PlatformType( email,type);
     }
 
 
