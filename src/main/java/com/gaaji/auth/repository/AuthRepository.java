@@ -8,6 +8,8 @@ import java.util.UUID;
 public interface AuthRepository {
     Auth save(PlatformType type, String email);
 
+    Optional<Auth> findById(String id);
+
     Optional<Auth> findByPlatformInfo(PlatformType type, String email);
 
     default String nextId(){
