@@ -2,6 +2,8 @@ package com.gaaji.auth.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gaaji.auth.applicationservice.TokenService;
+import com.gaaji.auth.controller.dto.TokenResponse;
 import com.gaaji.auth.domain.Auth;
 import com.gaaji.auth.domain.PlatformType;
 import com.gaaji.auth.repository.AuthRepository;
@@ -24,16 +26,18 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j @Transactional
 @Service
 public class CustomOAuth2UserServiceImpl implements CustomOAuth2UserService,
         OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final AuthRepository authRepository;
     private final Environment env;
+    private final TokenService tokenService;
 
 
     @Override
@@ -62,7 +66,7 @@ public class CustomOAuth2UserServiceImpl implements CustomOAuth2UserService,
 
 
     @Override
-    public void kakaoLogin(String code) {
+    public TokenResponse kakaoLogin(String code) {
         val grantType = "grant_type=authorization_code";
         val clientId = "client_id=" + env.getProperty("key.kakao.id");
         val clientSecret = "client_secret=" + env.getProperty("key.kakao.secret");
@@ -80,11 +84,13 @@ public class CustomOAuth2UserServiceImpl implements CustomOAuth2UserService,
         String responseCode = "kakao_account";
         String last = "https://kapi.kakao.com//v2/user/me";
         String email = getEmailFromServiceProvider(body.get("access_token"), last, responseCode);
-        saveOrFind(PlatformType.KAKAO, email);
+        Auth auth = saveOrFind(PlatformType.KAKAO, email);
+
+        return tokenService.createTokens(auth.getAuthIdForToken());
     }
 
     @Override
-    public void naverLogin(String code, String state) {
+    public TokenResponse naverLogin(String code, String state) {
         val grantType = "grant_type=authorization_code";
         val clientId = "client_id=" + env.getProperty("key.naver.id");
         val clientSecret = "client_secret=" + env.getProperty("key.naver.secret");
@@ -100,7 +106,9 @@ public class CustomOAuth2UserServiceImpl implements CustomOAuth2UserService,
         HashMap<String,String> body = restTemplate.getForEntity(url, HashMap.class).getBody();
         String responseCode = "response";
         String email = getEmailFromServiceProvider(body.get("access_token"), last, responseCode);
-        saveOrFind(PlatformType.NAVER, email);
+        Auth auth = saveOrFind(PlatformType.KAKAO, email);
+
+        return tokenService.createTokens(auth.getAuthIdForToken());
     }
 
     private String getEmailFromServiceProvider(String token, String last, String responseCode) {
