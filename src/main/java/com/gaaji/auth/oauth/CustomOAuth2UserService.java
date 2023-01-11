@@ -1,8 +1,10 @@
 package com.gaaji.auth.oauth;
 
+import com.gaaji.auth.controller.dto.TokenResponse;
+
 public interface CustomOAuth2UserService {
 
-    void kakaoLogin(String code);
+    TokenResponse kakaoLogin(String code);
 
-    void naverLogin(String code, String state);
+    TokenResponse naverLogin(String code, String state);
 }
