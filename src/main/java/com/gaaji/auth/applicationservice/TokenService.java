@@ -6,5 +6,5 @@ public interface TokenService {
 
      TokenResponse createTokens(String authId);
 
-     void refresh(String refreshToken);
+     String refresh(String refreshToken);
 }

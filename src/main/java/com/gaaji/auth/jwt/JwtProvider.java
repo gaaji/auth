@@ -2,6 +2,7 @@ package com.gaaji.auth.jwt;
 
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.nio.charset.StandardCharsets;
@@ -55,6 +56,10 @@ public class JwtProvider {
 
     public String createRefreshToken(String authId) {
         return createToken(REFRESH_TOKEN_EXPIRATION, authId);
+    }
+    public Claims validateToken(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        return claims.getBody();
     }
 
 
