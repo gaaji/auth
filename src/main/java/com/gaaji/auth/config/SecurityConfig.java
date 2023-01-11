@@ -1,6 +1,6 @@
 package com.gaaji.auth.config;
 
-import com.gaaji.auth.oauth.CustomOAuth2UserService;
+import com.gaaji.auth.oauth.CustomOAuth2UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserServiceImpl customOAuth2UserServiceImpl;
 
 
     @Bean
@@ -30,7 +30,7 @@ public class SecurityConfig {
 
                 .oauth2Login()
                     .userInfoEndpoint()
-                    .userService(customOAuth2UserService)
+                    .userService(customOAuth2UserServiceImpl)
                     .and()
                 .and()
                 .build();
