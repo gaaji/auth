@@ -106,7 +106,7 @@ public class CustomOAuth2UserServiceImpl implements CustomOAuth2UserService,
         HashMap<String,String> body = restTemplate.getForEntity(url, HashMap.class).getBody();
         String responseCode = "response";
         String email = getEmailFromServiceProvider(body.get("access_token"), last, responseCode);
-        Auth auth = saveOrFind(PlatformType.KAKAO, email);
+        Auth auth = saveOrFind(PlatformType.NAVER, email);
 
         return tokenService.createTokens(auth.getAuthIdForToken());
     }
