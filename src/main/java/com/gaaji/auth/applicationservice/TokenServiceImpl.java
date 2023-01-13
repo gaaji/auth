@@ -3,6 +3,7 @@ package com.gaaji.auth.applicationservice;
 import com.gaaji.auth.controller.dto.TokenResponse;
 import com.gaaji.auth.jwt.JwtProvider;
 import com.gaaji.auth.repository.AuthRepository;
+import io.jsonwebtoken.Claims;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -30,8 +31,7 @@ public class TokenServiceImpl implements TokenService{
 
     public String refresh(String refreshToken){
         // refreshToken 유효성 검증 (시간)
-        jwtProvider.validateToken(refreshToken); // error
-
+        jwtProvider.validateToken(refreshToken);// error
 
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
         String authId = ops.get(refreshToken);
