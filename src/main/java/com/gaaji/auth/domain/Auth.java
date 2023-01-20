@@ -20,16 +20,16 @@ public class Auth {
     private PlatformInfo platformInfo;
 
     @Embedded
-    private MannerTemparature mannerTemparature;
+    private MannerTemperature mannerTemperature;
 
 
     @Builder
     private Auth(AuthId id, String nickname, PlatformInfo platformInfo,
-            MannerTemparature mannerTemparature) {
+            MannerTemperature mannerTemperature) {
         this.id = id;
         this.nickname = nickname;
         this.platformInfo = platformInfo;
-        this.mannerTemparature = mannerTemparature;
+        this.mannerTemperature = mannerTemperature;
     }
 
     public static Auth signUp(String id, PlatformType type, String email){
@@ -37,7 +37,7 @@ public class Auth {
                 .id(AuthId.of(id))
                 .nickname("익명")
                 .platformInfo(PlatformInfo.of(type,email))
-                .mannerTemparature(MannerTemparature.of(36.5))
+                .mannerTemperature(MannerTemperature.of(36.5))
                 .build();
     }
     public void registerNickname(String nickname){
@@ -45,5 +45,11 @@ public class Auth {
     }
     public String getAuthIdForToken(){
         return id.getId();
+    }
+    public String getNickname(){
+        return nickname;
+    }
+    public double getMannerTemperature(){
+        return mannerTemperature.getTemperature();
     }
 }
