@@ -18,7 +18,7 @@ public class NicknameRegisterServiceImpl implements NicknameRegisterService{
     public void registerNickname(String authId, String nickname){
         Auth auth = authRepository
                 .findById(authId)
-                .orElseThrow(AuthIdNotFoundException::new); // TODO Exception 추가
+                .orElseThrow(AuthIdNotFoundException::new);
 
         auth.registerNickname(nickname);
     }
