@@ -6,6 +6,8 @@ spring:
         - "oauth"
   application:
     name: auth-service
+  config:
+    import: secret.yml
 
 eureka:
   client:

@@ -20,6 +20,6 @@ public class AuthRetrieveServiceImpl implements
     public RetrieveResponse retrieveAuth(String authId) {
         Auth auth = authRepository.findById(authId)
                 .orElseThrow();
-        return RetrieveResponse.of(authId, auth.getNickname(), auth.getMannerTemperature());
+        return RetrieveResponse.of(authId, auth.getNickname(), auth.getMannerTemperature(), auth.getProfilePictureUrl());
     }
 }

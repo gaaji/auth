@@ -15,6 +15,7 @@ public class Auth {
     private AuthId id;
 
     private String nickname;
+    private String profilePictureUrl;
 
     @Embedded
     private PlatformInfo platformInfo;
@@ -43,6 +44,9 @@ public class Auth {
     public void registerNickname(String nickname){
         this.nickname = nickname;
     }
+    public void registerProfilePicture(String profilePictureUrl){
+        this.profilePictureUrl = profilePictureUrl;
+    }
     public String getAuthIdForToken(){
         return id.getId();
     }
@@ -51,5 +55,9 @@ public class Auth {
     }
     public double getMannerTemperature(){
         return mannerTemperature.getTemperature();
+    }
+
+    public String getProfilePictureUrl() {
+        return this.profilePictureUrl;
     }
 }

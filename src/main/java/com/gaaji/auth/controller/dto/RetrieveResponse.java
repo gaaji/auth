@@ -12,11 +12,12 @@ public class RetrieveResponse {
 
     private String authId;
     private String nickname;
+    private String pictureUrl;
     private double mannerTemperature;
 
 
-    public static RetrieveResponse of(String authId, String nickname, double mannerTemperature) {
-        return new RetrieveResponse(authId, validateNickname(nickname), mannerTemperature);
+    public static RetrieveResponse of(String authId, String nickname, double mannerTemperature, String url) {
+        return new RetrieveResponse(authId, validateNickname(nickname), url, mannerTemperature);
     }
 
     private static String validateNickname(String nickname){
