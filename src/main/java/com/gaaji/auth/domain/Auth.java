@@ -56,4 +56,8 @@ public class Auth {
     public double getMannerTemperature(){
         return mannerTemperature.getTemperature();
     }
+
+    public String getProfilePictureUrl() {
+        return this.profilePictureUrl;
+    }
 }
