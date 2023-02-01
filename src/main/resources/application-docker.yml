@@ -2,6 +2,11 @@ spring:
   config:
     activate:
       on-profile: "docker"
+    import:
+      - secret.yml
+      - oauth.yml
+  application:
+    name: auth-service
 
   redis:
     host: redis
