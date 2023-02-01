@@ -3,11 +3,12 @@ spring:
     group:
       "default":
         - "dev"
-        - "oauth"
   application:
     name: auth-service
   config:
-    import: secret.yml
+    import:
+      - secret.yml
+      - oauth.yml
 
 eureka:
   client:
