@@ -3,12 +3,16 @@
 name: Java CI with Gradle
 
 on:
-
   pull_request:
 
 
 permissions:
   contents: read
+
+env:
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/gaaji-auth-service
+  VERSION: ${{ github.sha }}
+
 
 jobs:
   build:
