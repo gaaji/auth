@@ -3,6 +3,7 @@ package com.gaaji.auth.applicationservice;
 import com.gaaji.auth.controller.dto.RetrieveResponse;
 import com.gaaji.auth.domain.Auth;
 import com.gaaji.auth.domain.AuthId;
+import com.gaaji.auth.exception.AuthIdNotFoundException;
 import com.gaaji.auth.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class AuthRetrieveServiceImpl implements
     @Override
     public RetrieveResponse retrieveAuth(String authId) {
         Auth auth = authRepository.findById(authId)
-                .orElseThrow();
+                .orElseThrow(AuthIdNotFoundException::new);
         return RetrieveResponse.of(authId, auth.getNickname(), auth.getMannerTemperature(), auth.getProfilePictureUrl());
     }
 }
