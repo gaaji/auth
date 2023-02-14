@@ -5,6 +5,7 @@ spring:
         - "single"
       "single":
         - "single"
+        - "redis-local"
       "local":
         - "local"
       "docker":
