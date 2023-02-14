@@ -2,17 +2,24 @@ spring:
   profiles:
     group:
       "default":
-        - "dev"
+        - "single"
+      "single":
+        - "single"
+      "local":
+        - "local"
+      "docker":
+        - "docker"
+      "prod" :
   application:
     name: auth-service
   config:
     import:
       - secret.yml
       - oauth.yml
-
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone : http://localhost:8761/eureka
+      - kafka.yml
+      - redis.yml
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
