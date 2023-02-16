@@ -22,11 +22,13 @@ public class Review {
 	private ReviewId reviewId;
 	
 	@Embedded
+	private PostId postID;
+	
+	@Embedded
 	private AuthId senderID;
 	
 	@Embedded
 	private AuthId receiverID;
-	
 	
 	@Enumerated(EnumType.STRING)
     private List<GoodManner> goodManners;
@@ -37,8 +39,8 @@ public class Review {
 	@Embedded
 	private Comment comment;
 	
-	public static Review of(ReviewId reviewId, AuthId senderID, AuthId receiverID, List<GoodManner> goodManners, List<BadManner> badManners, Comment comment) {
-		return new Review(reviewId, senderID, receiverID, goodManners, badManners, comment);
+	public static Review of(ReviewId reviewId, PostId postID, AuthId senderID, AuthId receiverID, List<GoodManner> goodManners, List<BadManner> badManners, Comment comment) {
+		return new Review(reviewId, postID, senderID, receiverID, goodManners, badManners, comment);
 		
 	}
 
