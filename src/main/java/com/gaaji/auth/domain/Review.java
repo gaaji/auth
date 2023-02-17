@@ -1,47 +1,60 @@
 package com.gaaji.auth.domain;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Getter
 public class Review {
 
 	@EmbeddedId
 	private ReviewId reviewId;
 	
-	@Embedded
-	private PostId postID;
+	@Embedded 
+    @AttributeOverride(name = "id", column = @Column(name = "post_Id"))
+	private PostId postId;
+	
+	@Embedded 
+    @AttributeOverride(name = "id", column = @Column(name = "sender_Id"))
+	private AuthId senderId;
 	
 	@Embedded
-	private AuthId senderID;
+    @AttributeOverride(name = "id", column = @Column(name = "receiver_Id"))
+	private AuthId receiverId;
 	
-	@Embedded
-	private AuthId receiverID;
-	
-	@Enumerated(EnumType.STRING)
+	@ElementCollection
+    @CollectionTable(name = "goodManner", 
+        joinColumns = @JoinColumn(name = "reviewId"))
     private List<GoodManner> goodManners;
 	
-	@Enumerated(EnumType.STRING)
+	@ElementCollection
+    @CollectionTable(name = "badManner", 
+        joinColumns = @JoinColumn(name = "reviewId"))
     private List<BadManner> badManners;
 	
 	@Embedded
 	private Comment comment;
 	
-	public static Review of(ReviewId reviewId, PostId postID, AuthId senderID, AuthId receiverID, List<GoodManner> goodManners, List<BadManner> badManners, Comment comment) {
-		return new Review(reviewId, postID, senderID, receiverID, goodManners, badManners, comment);
-		
+	public static Review of(ReviewId reviewId, PostId postId, AuthId senderId, AuthId receiverId, List<GoodManner> goodManners, List<BadManner> badManners, Comment comment) {
+		return new Review(reviewId, postId, senderId, receiverId, goodManners, badManners, comment);
 	}
 
 	

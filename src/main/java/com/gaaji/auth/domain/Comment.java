@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
+@Getter
 public class Comment {
 
 	private String pictureUrl;

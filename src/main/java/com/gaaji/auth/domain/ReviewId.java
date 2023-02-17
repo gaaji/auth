@@ -39,4 +39,8 @@ public class ReviewId implements Serializable {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	public String getId() {
+		return id;
+	}
+	
 }

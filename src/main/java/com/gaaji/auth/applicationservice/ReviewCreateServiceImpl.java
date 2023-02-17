@@ -16,7 +16,10 @@ import com.gaaji.auth.domain.GoodManner;
 import com.gaaji.auth.domain.PostId;
 import com.gaaji.auth.domain.Review;
 import com.gaaji.auth.domain.ReviewId;
-import com.gaaji.auth.exception.NomatchIdException;
+import com.gaaji.auth.exception.EqualsSellerAndPurchaserException;
+import com.gaaji.auth.exception.NoMatchIdException;
+import com.gaaji.auth.exception.NoReviewException;
+import com.gaaji.auth.exception.NonexistentTargetException;
 import com.gaaji.auth.repository.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,28 +33,41 @@ public class ReviewCreateServiceImpl implements ReviewCreateService {
 	private final S3Uploader s3Uploader;
 
 	@Override
-	public void createReview(String authId, ReviewCreateRequest dto) {
-		saveEntity(createReviewEntity(dto, authId));
+	public void createReview(String authId, MultipartFile multipartFile,ReviewCreateRequest dto) {
+		saveEntity(createReviewEntity(dto, multipartFile, authId));
 	}
 
 	private void saveEntity(Review review) {
 		this.reviewRepository.save(review);
 	}
 
-	private Review createReviewEntity(ReviewCreateRequest dto, String authId) {
-		String pictureUrl = uploadImage(dto.getMultipartFile());
+	private Review createReviewEntity(ReviewCreateRequest dto, MultipartFile multipartFile, String authId) {
+		if((dto.getPurchaserId() == null) || dto.getSellerId() == null) {
+			throw new NonexistentTargetException();
+		} 
+
+		if((dto.getContents() == null) && (dto.getGoodManners().size() == 0) && (dto.getBadManners().size() == 0)) {
+			throw new NoReviewException();
+		}
+		
+		if(dto.getSellerId().equals(dto.getPurchaserId())) {
+			throw new EqualsSellerAndPurchaserException();
+		}
+		
+		String pictureUrl = uploadImage(multipartFile);
 		List<GoodManner> goodManners = getGoodManners(dto.getGoodManners());
 		List<BadManner> badManners = getBaddManners(dto.getBadManners());
 		if (dto.getPurchaserId().equals(authId)) {
 			return Review.of(ReviewId.of(this.reviewRepository.nextId()), PostId.of(dto.getPostId()), AuthId.of(authId),
 					AuthId.of(dto.getSellerId()), goodManners, badManners,
 					Comment.of(pictureUrl, dto.getContents(), true));
+			
 		} else if (dto.getSellerId().equals(authId)) {
 			return Review.of(ReviewId.of(this.reviewRepository.nextId()), PostId.of(dto.getPostId()), AuthId.of(authId),
 					AuthId.of(dto.getPurchaserId()), goodManners, badManners,
 					Comment.of(pictureUrl, dto.getContents(), false));
 		} else {
-			throw new NomatchIdException();
+			throw new NoMatchIdException();
 		}
 	}
 
@@ -82,6 +98,9 @@ public class ReviewCreateServiceImpl implements ReviewCreateService {
 	}
 
 	private String uploadImage(MultipartFile multipartFile) {
+		if(multipartFile == null) {
+			return null;
+		}
 		return s3Uploader.upload(multipartFile);
 	}
 

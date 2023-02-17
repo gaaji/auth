@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class ReviewCreateRequest {
 	
-	MultipartFile multipartFile;
 	private String postId;
 	private String sellerId;
 	private String purchaserId;
