@@ -6,6 +6,6 @@ import com.gaaji.auth.controller.dto.ReviewUpdateRequest;
 
 public interface ReviewUpdateService {
 
-	void updateUpdate(String authId, MultipartFile multipartFile, ReviewUpdateRequest dto);
+	void updateReview(String authId, MultipartFile multipartFile, ReviewUpdateRequest dto);
 
 }

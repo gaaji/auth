@@ -23,7 +23,7 @@ public class ReviewUpdateController {
 	
 	@PatchMapping
 	private ResponseEntity<Void> updateReview(@RequestHeader(HttpHeaders.AUTHORIZATION) String authId, @RequestPart("reviewCreateRequest") ReviewUpdateRequest dto, @RequestPart("file")MultipartFile multipartFile) {
-		this.reviewUpdateService.updateUpdate(authId, multipartFile, dto);
+		this.reviewUpdateService.updateReview(authId, multipartFile, dto);
 		
 		return ResponseEntity.ok().build();
 	}

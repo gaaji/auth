@@ -17,6 +17,7 @@ public enum AuthErrorCode implements ErrorCode{
     No_Review(HttpStatus.BAD_REQUEST, "r-0005","후기가 없습니다."),
     Equals_Seller_And_Purchaser(HttpStatus.BAD_REQUEST, "r-0006","판매자와 구매자가 동일합니다."),
     No_Search_Review(HttpStatus.BAD_REQUEST, "r-0007","해당 후기를 찾지 못했습니다."),
+    No_Match_Sender(HttpStatus.BAD_REQUEST, "r-0008","해당 후기 작성자와 정보가 맞지 않습니다."),
     ;
 
     private final HttpStatus httpStatus;

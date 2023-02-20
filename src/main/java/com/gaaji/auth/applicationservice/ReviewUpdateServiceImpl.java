@@ -13,6 +13,7 @@ import com.gaaji.auth.domain.BadManner;
 import com.gaaji.auth.domain.GoodManner;
 import com.gaaji.auth.domain.Review;
 import com.gaaji.auth.domain.ReviewId;
+import com.gaaji.auth.exception.NoMatchSenderException;
 import com.gaaji.auth.exception.NoSearchReviewException;
 import com.gaaji.auth.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,12 @@ public class ReviewUpdateServiceImpl implements ReviewUpdateService{
 	private final S3Uploader s3Uploader;
 	
 	@Override
-	public void updateUpdate(String authId, MultipartFile multipartFile, ReviewUpdateRequest dto) {
+	public void updateReview(String authId, MultipartFile multipartFile, ReviewUpdateRequest dto) {
 		Review review = this.reviewRepository.findById(ReviewId.of(dto.getReviewId())).orElseThrow(NoSearchReviewException::new);
+		
+		if(!review.getSenderId().getId().equals(authId)) {
+			throw new NoMatchSenderException();
+		}
 		
 		String pictureUrl;
 		List<GoodManner> goodManners = getGoodManners(dto.getGoodManners());
