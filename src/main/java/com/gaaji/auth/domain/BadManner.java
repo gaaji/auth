@@ -1,5 +1,8 @@
 package com.gaaji.auth.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum BadManner {
 
 	bm1("반말을 사용해요"),
