@@ -40,3 +40,4 @@ out/
 /src/main/resources/oauth.yml
 /src/main/resources/secret.yml
 /src/main/resources/kafka.yml
+/spy.log
