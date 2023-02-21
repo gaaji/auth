@@ -15,18 +15,20 @@ public class Comment {
 
 	private String pictureUrl;
 	private String contents;
+	private String town;
 	private boolean ispurchaser;
 	private LocalDateTime createdAt;
 
-	public Comment(String pictureUrl, String contents, boolean ispurchaser) {
+	public Comment(String pictureUrl, String contents, String town, boolean ispurchaser) {
 		this.pictureUrl = pictureUrl;
 		this.contents = contents;
 		this.ispurchaser = ispurchaser;
+		this.town = town;
 		this.createdAt = LocalDateTime.now();
 	}
 
-	public static Comment of(String pictureUrl, String contents, boolean ispurchaser) {
-		return new Comment(pictureUrl, contents, ispurchaser);
+	public static Comment of(String pictureUrl, String contents, String town, boolean ispurchaser) {
+		return new Comment(pictureUrl, contents, town, ispurchaser);
 
 	}
 

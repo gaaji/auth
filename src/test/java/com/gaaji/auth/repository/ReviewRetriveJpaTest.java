@@ -37,7 +37,7 @@ public class ReviewRetriveJpaTest {
 		good.add(GoodManner.gm1);
 		List<BadManner> bad = new ArrayList<BadManner>();
 		bad.add(BadManner.bm2);
-		Review review = Review.of(ReviewId.of("review"), PostId.of("post"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", "내용", true));
+		Review review = Review.of(ReviewId.of("review"), PostId.of("post"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", "내용", "남가좌동", true));
 		
 		this.jpaReviewRepository.save(review);
 		
@@ -52,6 +52,7 @@ public class ReviewRetriveJpaTest {
 		
 		assertThat(newReview.getComment().getPictureUrl()).isEqualTo("사진");
 		assertThat(newReview.getComment().getContents()).isEqualTo("내용");
+		assertThat(newReview.getComment().getTown()).isEqualTo("남가좌동");
 		assertThat(newReview.getComment().isIspurchaser()).isEqualTo(true);
 		
 	}

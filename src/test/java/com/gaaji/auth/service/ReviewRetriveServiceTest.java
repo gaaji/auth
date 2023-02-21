@@ -49,7 +49,7 @@ public class ReviewRetriveServiceTest {
 	good.add(GoodManner.gm1);
 	List<BadManner> bad = new ArrayList<BadManner>();
 	bad.add(BadManner.bm2);
-	Review review = Review.of(ReviewId.of("review"), PostId.of("post"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", "내용", true));
+	Review review = Review.of(ReviewId.of("review"), PostId.of("post"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", "내용", "남가좌동", true));
 	
 	this.jpaReviewRepository.save(review);
 	

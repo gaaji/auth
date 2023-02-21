@@ -17,6 +17,7 @@ public class ReviewCreateRequest {
 	private String postId;
 	private String sellerId;
 	private String purchaserId;
+	private String town;
 	private List<String> goodManners;
 	private List<String> badManners;
 	private String contents;
