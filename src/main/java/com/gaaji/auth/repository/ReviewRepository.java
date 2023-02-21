@@ -1,8 +1,10 @@
 package com.gaaji.auth.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import com.gaaji.auth.domain.Review;
+import com.gaaji.auth.domain.ReviewId;
 
 public interface ReviewRepository {
 
@@ -11,5 +13,7 @@ public interface ReviewRepository {
     }
 
 	void save(Review review);
+
+	Optional<Review> findById(ReviewId of);
 
 }

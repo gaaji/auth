@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.gaaji.auth.controller.dto.ReviewUpdateRequest;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,6 +57,12 @@ public class Review {
 	
 	public static Review of(ReviewId reviewId, PostId postId, AuthId senderId, AuthId receiverId, List<GoodManner> goodManners, List<BadManner> badManners, Comment comment) {
 		return new Review(reviewId, postId, senderId, receiverId, goodManners, badManners, comment);
+	}
+
+	public void modify(String pictureUrl, List<GoodManner> goodManners, List<BadManner> badManners, String contents) {
+		this.goodManners = goodManners;
+		this.badManners = badManners;
+		this.comment = Comment.of(pictureUrl, contents, this.comment.isIspurchaser());
 	}
 
 	
