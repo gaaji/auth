@@ -64,7 +64,7 @@ public class ReviewUpdateServiceTest {
 	ReviewUpdateRequest reviewUpdateRequest = new ReviewUpdateRequest("review", goodEdit, badEdit, "수정", false);
 	this.reviewUpdateService.updateReview("sender", null, reviewUpdateRequest);
 	
-	 Review newReview = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post"), AuthId.of("sender"));
+	 Review newReview = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post"), AuthId.of("sender")).orElseThrow(NoSearchReviewException::new);
 		assertThat(newReview.getPostId().getId()).isEqualTo("post");
 		
 		assertThat(newReview.getSenderId().getId()).isEqualTo("sender");

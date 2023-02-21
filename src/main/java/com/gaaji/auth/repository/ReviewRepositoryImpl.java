@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.gaaji.auth.domain.AuthId;
+import com.gaaji.auth.domain.PostId;
 import com.gaaji.auth.domain.Review;
 import com.gaaji.auth.domain.ReviewId;
 
@@ -23,6 +25,11 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	@Override
 	public Optional<Review> findById(ReviewId reviewId) {
 		return this.jpaReviewRepository.findById(reviewId);
+	}
+
+	@Override
+	public Optional<Review> findByPostIdAndSenderId(PostId postId, AuthId senderId) {
+		return this.jpaReviewRepository.findByPostIdAndSenderId(postId, senderId);
 	}
 
 }
