@@ -24,6 +24,7 @@ import com.gaaji.auth.domain.ReviewId;
 import com.gaaji.auth.exception.EqualsSellerAndPurchaserException;
 import com.gaaji.auth.exception.NoMatchIdException;
 import com.gaaji.auth.exception.NoReviewException;
+import com.gaaji.auth.exception.NoSearchReviewException;
 import com.gaaji.auth.exception.NonexistentTargetException;
 import com.gaaji.auth.repository.JpaReviewRepository;
 
@@ -61,7 +62,7 @@ public class ReviewCreateServiceTest {
 		 
 		 
 		 
-		 Review newReview = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post"), AuthId.of("aaa"));
+		 Review newReview = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post"), AuthId.of("aaa")).orElseThrow(NoSearchReviewException::new);
 			assertThat(newReview.getPostId().getId()).isEqualTo("post");
 			
 			assertThat(newReview.getSenderId().getId()).isEqualTo("aaa");
@@ -73,7 +74,7 @@ public class ReviewCreateServiceTest {
 			assertThat(newReview.getComment().getContents()).isEqualTo("빨라요");
 			assertThat(newReview.getComment().isIspurchaser()).isEqualTo(false);
 		 
-			 Review newReview1 = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post1"), AuthId.of("aaa"));
+			 Review newReview1 = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post1"), AuthId.of("aaa")).orElseThrow(NoSearchReviewException::new);
 			assertThat(newReview1.getPostId().getId()).isEqualTo("post1");
 			
 			assertThat(newReview1.getSenderId().getId()).isEqualTo("aaa");
