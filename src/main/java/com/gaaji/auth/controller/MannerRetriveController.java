@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/manner")
 @RequiredArgsConstructor
 @RestController
-public class RetriveMannerListController {
+public class MannerRetriveController {
 
 	private final MannerRetriveService mannerRetriveService;
 	
