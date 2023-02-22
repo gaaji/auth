@@ -32,7 +32,7 @@ public class ReviewRetriveJpaTest {
 	}
 	
 	@Test
-	void 조회테스트() {
+	void 내조회테스트() {
 		List<GoodManner> good = new ArrayList<GoodManner>();
 		good.add(GoodManner.gm1);
 		List<BadManner> bad = new ArrayList<BadManner>();
@@ -42,6 +42,37 @@ public class ReviewRetriveJpaTest {
 		this.jpaReviewRepository.save(review);
 		
 		Review newReview = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post"), AuthId.of("sender")).orElseThrow(NoSearchReviewException::new);
+		assertThat(newReview.getReviewId().getId()).isEqualTo("review");
+		assertThat(newReview.getPostId().getId()).isEqualTo("post");
+		
+		assertThat(newReview.getSenderId().getId()).isEqualTo("sender");
+		assertThat(newReview.getReceiverId().getId()).isEqualTo("receiver");
+		assertThat(newReview.getGoodManners().get(0)).isEqualTo(GoodManner.gm1);
+		assertThat(newReview.getBadManners().get(0)).isEqualTo(BadManner.bm2);
+		
+		assertThat(newReview.getComment().getPictureUrl()).isEqualTo("사진");
+		assertThat(newReview.getComment().getContents()).isEqualTo("내용");
+		assertThat(newReview.getComment().getTown()).isEqualTo("남가좌동");
+		assertThat(newReview.getComment().isIspurchaser()).isEqualTo(true);
+		
+	}
+	
+	@Test
+	void 후기조회테스트() {
+		List<GoodManner> good = new ArrayList<GoodManner>();
+		good.add(GoodManner.gm1);
+		List<BadManner> bad = new ArrayList<BadManner>();
+		bad.add(BadManner.bm2);
+		Review review = Review.of(ReviewId.of("review"), PostId.of("post"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", "내용", "남가좌동", true));
+		Review review1 = Review.of(ReviewId.of("review1"), PostId.of("post1"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", null, "남가좌동", true));
+
+		this.jpaReviewRepository.save(review);
+		this.jpaReviewRepository.save(review1);
+		
+		List<Review> reviewList = this.jpaReviewRepository.findByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId.of("receiver"));
+		
+		assertThat(reviewList.size()).isEqualTo(1);
+		Review newReview = reviewList.get(0);
 		assertThat(newReview.getReviewId().getId()).isEqualTo("review");
 		assertThat(newReview.getPostId().getId()).isEqualTo("post");
 		
