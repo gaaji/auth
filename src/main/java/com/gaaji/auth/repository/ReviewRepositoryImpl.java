@@ -1,5 +1,6 @@
 package com.gaaji.auth.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,11 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 	@Override
 	public Optional<Review> findByPostIdAndSenderId(PostId postId, AuthId senderId) {
 		return this.jpaReviewRepository.findByPostIdAndSenderId(postId, senderId);
+	}
+
+	@Override
+	public List<Review> findByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId receiverId) {
+		return this.jpaReviewRepository.findByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(receiverId);
 	}
 
 }
