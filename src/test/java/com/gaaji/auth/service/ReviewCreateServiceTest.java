@@ -25,6 +25,7 @@ import com.gaaji.auth.exception.EqualsSellerAndPurchaserException;
 import com.gaaji.auth.exception.NoMatchIdException;
 import com.gaaji.auth.exception.NoReviewException;
 import com.gaaji.auth.exception.NoSearchReviewException;
+import com.gaaji.auth.exception.NoTownException;
 import com.gaaji.auth.exception.NonexistentTargetException;
 import com.gaaji.auth.repository.JpaReviewRepository;
 
@@ -53,8 +54,8 @@ public class ReviewCreateServiceTest {
 		bad.add("bm3");
 		bad.add("bm4");
 		
-		 ReviewCreateRequest dto1 = new ReviewCreateRequest("post", "aaa", "purchaser", no, no, "빨라요");
-		 ReviewCreateRequest dto2 = new ReviewCreateRequest("post1", "seller", "aaa", good, bad, null);
+		 ReviewCreateRequest dto1 = new ReviewCreateRequest("post", "aaa", "purchaser", "남가좌동", no, no, "빨라요");
+		 ReviewCreateRequest dto2 = new ReviewCreateRequest("post1", "seller", "aaa", "남가좌동", good, bad, null);
 		 
 		 
 		 reviewCreateService.createReview("aaa", null, dto1);
@@ -72,6 +73,7 @@ public class ReviewCreateServiceTest {
 			
 			assertThat(newReview.getComment().getPictureUrl()).isEqualTo(null);
 			assertThat(newReview.getComment().getContents()).isEqualTo("빨라요");
+			assertThat(newReview.getComment().getTown()).isEqualTo("남가좌동");
 			assertThat(newReview.getComment().isIspurchaser()).isEqualTo(false);
 		 
 			 Review newReview1 = this.jpaReviewRepository.findByPostIdAndSenderId(PostId.of("post1"), AuthId.of("aaa")).orElseThrow(NoSearchReviewException::new);
@@ -85,20 +87,28 @@ public class ReviewCreateServiceTest {
 			assertThat(newReview1.getBadManners().get(1)).isEqualTo(BadManner.bm4);		
 			assertThat(newReview1.getComment().getPictureUrl()).isEqualTo(null);
 			assertThat(newReview1.getComment().getContents()).isEqualTo(null);
+			assertThat(newReview.getComment().getTown()).isEqualTo("남가좌동");
 			assertThat(newReview1.getComment().isIspurchaser()).isEqualTo(true);
+	}
+	
+	@Test
+	void 추가서비스에러케이스5타운이없는경우 (){
+		List<String> no = new ArrayList<String>();
+		 ReviewCreateRequest dto = new ReviewCreateRequest("post", "purchaser", "purchaser", null, no, no, "123");
+		 assertThatThrownBy(()->reviewCreateService.createReview("aaa", null, dto)).isInstanceOf(NoTownException.class);
 	}
 	
 	@Test
 	void 추가서비스에러케이스4판매자와구매자가같은경우 (){
 		List<String> no = new ArrayList<String>();
-		 ReviewCreateRequest dto = new ReviewCreateRequest("post", "purchaser", "purchaser", no, no, "123");
+		 ReviewCreateRequest dto = new ReviewCreateRequest("post", "purchaser", "purchaser", "남가좌동", no, no, "123");
 		 assertThatThrownBy(()->reviewCreateService.createReview("aaa", null, dto)).isInstanceOf(EqualsSellerAndPurchaserException.class);
 	}
 	
 	@Test
 	void 추가서비스에러케이스3후기작성자가구매자와판매자가아닌경우 (){
 		List<String> no = new ArrayList<String>();
-		ReviewCreateRequest dto = new ReviewCreateRequest("post", "seller", "purchaser", no, no, "123");
+		ReviewCreateRequest dto = new ReviewCreateRequest("post", "seller", "purchaser", "남가좌동", no, no, "123");
 
 		 assertThatThrownBy(()->reviewCreateService.createReview("aaa", null, dto)).isInstanceOf(NoMatchIdException.class);
 	}
@@ -106,7 +116,7 @@ public class ReviewCreateServiceTest {
 	@Test
 	void 추가서비스에러케이스2후기가없는경우 (){
 		List<String> no = new ArrayList<String>();
-		 ReviewCreateRequest dto = new ReviewCreateRequest("post", "aaa", "purchaser", no, no, null);
+		 ReviewCreateRequest dto = new ReviewCreateRequest("post", "aaa", "purchaser", "남가좌동", no, no, null);
 
 		 assertThatThrownBy(()->reviewCreateService.createReview("aaa", null, dto)).isInstanceOf(NoReviewException.class);
 	}
@@ -114,7 +124,7 @@ public class ReviewCreateServiceTest {
 	@Test
 	void 추가서비스에러케이스1글과관련된아이디없는경우 (){
 		List<String> no = new ArrayList<String>();
-		 ReviewCreateRequest dto = new ReviewCreateRequest("aaa", null, null, no, no, "123");
+		 ReviewCreateRequest dto = new ReviewCreateRequest("aaa", null, null, "남가좌동", no, no, "123");
 
 		 assertThatThrownBy(()->reviewCreateService.createReview("aaa", null, dto)).isInstanceOf(NonexistentTargetException.class);
 	}

@@ -1,5 +1,6 @@
 package com.gaaji.auth.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,5 +20,7 @@ public interface ReviewRepository {
 	Optional<Review> findById(ReviewId of);
 
 	Optional<Review> findByPostIdAndSenderId(PostId postId, AuthId senderId);
+
+	List<Review> findByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId receiverId);
 
 }

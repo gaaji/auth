@@ -62,7 +62,7 @@ public class Review {
 	public void modify(String pictureUrl, List<GoodManner> goodManners, List<BadManner> badManners, String contents) {
 		this.goodManners = goodManners;
 		this.badManners = badManners;
-		this.comment = Comment.of(pictureUrl, contents, this.comment.isIspurchaser());
+		this.comment = Comment.of(pictureUrl, contents, this.comment.getTown(), this.comment.isIspurchaser());
 	}
 
 	
