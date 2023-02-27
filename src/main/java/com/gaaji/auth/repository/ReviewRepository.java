@@ -31,4 +31,6 @@ public interface ReviewRepository {
 
 	List<Review> findDistinctByReceiverIdAndBadMannersNotNull(AuthId receiverId);
 
+	List<Review> findTop3ByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId receiverId);
+
 }

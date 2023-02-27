@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gaaji.auth.applicationservice.ReviewRetriveService;
 import com.gaaji.auth.controller.dto.CommentRetrieveResponse;
 import com.gaaji.auth.controller.dto.MannerRetrieveResponse;
+import com.gaaji.auth.controller.dto.PreviewReviewRetrieveResponse;
 import com.gaaji.auth.controller.dto.ReviewRetrieveResponse;
 import com.gaaji.auth.domain.Review;
 
@@ -32,14 +33,20 @@ public class ReviewRetriveController {
 		}
 	
 	@GetMapping("/comment")
-	private ResponseEntity<List<CommentRetrieveResponse>> retriveComments(@RequestHeader(HttpHeaders.AUTHORIZATION) String authId, @RequestBody String postId) {
-		List<CommentRetrieveResponse> dto = this.reviewRetriveService.retriveComment(authId);
+	private ResponseEntity<List<CommentRetrieveResponse>> retriveComments(@RequestHeader(HttpHeaders.AUTHORIZATION) String authId, @RequestBody String userId) {
+		List<CommentRetrieveResponse> dto = this.reviewRetriveService.retriveComment(userId);
 		return ResponseEntity.ok(dto);
 		}
 	
 	@GetMapping("/manner")
 	private ResponseEntity<MannerRetrieveResponse> retriveManner(@RequestHeader(HttpHeaders.AUTHORIZATION) String authId, @RequestBody String userId) {
 		MannerRetrieveResponse dto = this.reviewRetriveService.retriveManner(authId, userId);
+		return ResponseEntity.ok(dto);
+		}
+	
+	@GetMapping
+	private ResponseEntity<PreviewReviewRetrieveResponse> retriveReview(@RequestHeader(HttpHeaders.AUTHORIZATION) String authId, @RequestBody String userId) {
+		PreviewReviewRetrieveResponse dto = this.reviewRetriveService.retriveReview(userId);
 		return ResponseEntity.ok(dto);
 		}
 }
