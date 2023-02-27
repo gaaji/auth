@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gaaji.auth.controller.dto.BadMannerCount;
+import com.gaaji.auth.controller.dto.CommentInfo;
 import com.gaaji.auth.controller.dto.CommentRetrieveResponse;
 import com.gaaji.auth.controller.dto.GoodMannerCount;
 import com.gaaji.auth.controller.dto.MannerRetrieveResponse;
+import com.gaaji.auth.controller.dto.PreviewReviewRetrieveResponse;
 import com.gaaji.auth.controller.dto.ReviewRetrieveResponse;
 import com.gaaji.auth.domain.Auth;
 import com.gaaji.auth.domain.AuthId;
@@ -42,8 +44,8 @@ public class ReviewRetriveServiceImpl implements ReviewRetriveService{
 	}
 
 	@Override
-	public List<CommentRetrieveResponse> retriveComment(String authId) {
-		List<Review> reviewList = this.reviewRepository.findByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId.of(authId));
+	public List<CommentRetrieveResponse> retriveComment(String userId) {
+		List<Review> reviewList = this.reviewRepository.findByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId.of(userId));
 		List<CommentRetrieveResponse> commentList = new ArrayList<CommentRetrieveResponse>();
 		for(Review review : reviewList) {
 			
@@ -81,8 +83,6 @@ public class ReviewRetriveServiceImpl implements ReviewRetriveService{
 		}
 		
 		for(Review review : reviewList) {
-			System.out.println(reviewList.size());
-			System.out.println(review.getReviewId().getId());
 			goodManners.addAll(review.getGoodManners());
 		}
 
@@ -107,8 +107,6 @@ public class ReviewRetriveServiceImpl implements ReviewRetriveService{
 		}
 		
 		for(Review review : reviewList) {
-			System.out.println(reviewList.size());
-			System.out.println(review.getReviewId().getId());
 			badManners.addAll(review.getBadManners());
 		}
 
@@ -121,6 +119,29 @@ public class ReviewRetriveServiceImpl implements ReviewRetriveService{
 		badMannerCountList.sort(Comparator.comparing(BadMannerCount::getCount).reversed());
 
 		return badMannerCountList;
+	}
+
+	@Override
+	public PreviewReviewRetrieveResponse retriveReview(String userId) {
+		
+		List<Review> reviewList = this.reviewRepository.findTop3ByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId.of(userId));
+		List<CommentInfo> commentInfoList = new ArrayList<CommentInfo>();
+		for(Review review : reviewList) {
+			
+			Auth auth = this.authRepository.findById(review.getSenderId().getId()).orElse(Auth.signUp(null, null, null));
+			if(auth.getAuthIdForToken()==null) {
+			auth.registerNickname(null);
+			}
+			commentInfoList.add(CommentInfo.of(review.getSenderId().getId(), auth.getNickname(), auth.getProfilePictureUrl(), review.getComment().getTown(), review.getComment().getContents(), review.getComment().getPictureUrl(), review.getComment().isIspurchaser(), review.getComment().getCreatedAt()));
+			
+		}
+		List<GoodMannerCount> goodMannerCount= getGoodMannerCount(userId);
+		if(goodMannerCount.size() > 3) {
+			goodMannerCount.subList(3, goodMannerCount.size()).clear();
+		}
+		
+		
+		return PreviewReviewRetrieveResponse.of(commentInfoList, goodMannerCount);
 	}
 
 	

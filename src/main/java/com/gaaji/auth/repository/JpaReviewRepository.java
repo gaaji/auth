@@ -26,4 +26,6 @@ public interface JpaReviewRepository extends JpaRepository<Review, ReviewId>{
 
 	List<Review> findDistinctByReceiverIdAndBadMannersNotNull(AuthId receiverId);
 
+	List<Review> findTop3ByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(AuthId receiverId);
+
 }

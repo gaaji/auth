@@ -55,6 +55,12 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 		return this.jpaReviewRepository.findDistinctByReceiverIdAndBadMannersNotNull(receiverId);
 	}
 
+	@Override
+	public List<Review> findTop3ByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(
+			AuthId receiverId) {
+		return this.jpaReviewRepository.findTop3ByReceiverIdAndComment_ContentsIsNotNullOrderByComment_CreatedAtDesc(receiverId);
+	}
+
 
 
 }
