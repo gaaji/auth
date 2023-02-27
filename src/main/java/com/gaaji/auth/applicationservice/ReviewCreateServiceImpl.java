@@ -19,6 +19,7 @@ import com.gaaji.auth.domain.ReviewId;
 import com.gaaji.auth.exception.EqualsSellerAndPurchaserException;
 import com.gaaji.auth.exception.NoMatchIdException;
 import com.gaaji.auth.exception.NoReviewException;
+import com.gaaji.auth.exception.NoTownException;
 import com.gaaji.auth.exception.NonexistentTargetException;
 import com.gaaji.auth.repository.ReviewRepository;
 
@@ -42,6 +43,10 @@ public class ReviewCreateServiceImpl implements ReviewCreateService {
 	}
 
 	private Review createReviewEntity(ReviewCreateRequest dto, MultipartFile multipartFile, String authId) {
+		if(dto.getTown() == null) {
+			throw new NoTownException();
+		}
+		
 		if((dto.getPurchaserId() == null) || dto.getSellerId() == null) {
 			throw new NonexistentTargetException();
 		} 
@@ -60,12 +65,12 @@ public class ReviewCreateServiceImpl implements ReviewCreateService {
 		if (dto.getPurchaserId().equals(authId)) {
 			return Review.of(ReviewId.of(this.reviewRepository.nextId()), PostId.of(dto.getPostId()), AuthId.of(authId),
 					AuthId.of(dto.getSellerId()), goodManners, badManners,
-					Comment.of(pictureUrl, dto.getContents(), true));
+					Comment.of(pictureUrl, dto.getContents(), dto.getTown(), true));
 			
 		} else if (dto.getSellerId().equals(authId)) {
 			return Review.of(ReviewId.of(this.reviewRepository.nextId()), PostId.of(dto.getPostId()), AuthId.of(authId),
 					AuthId.of(dto.getPurchaserId()), goodManners, badManners,
-					Comment.of(pictureUrl, dto.getContents(), false));
+					Comment.of(pictureUrl, dto.getContents(), dto.getTown(), false));
 		} else {
 			throw new NoMatchIdException();
 		}

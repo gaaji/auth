@@ -43,12 +43,12 @@ public class Review {
 	private AuthId receiverId;
 	
 	@ElementCollection
-    @CollectionTable(name = "goodManner", 
+    @CollectionTable(name = "goodManners", 
         joinColumns = @JoinColumn(name = "reviewId"))
     private List<GoodManner> goodManners;
 	
 	@ElementCollection
-    @CollectionTable(name = "badManner", 
+    @CollectionTable(name = "badManners", 
         joinColumns = @JoinColumn(name = "reviewId"))
     private List<BadManner> badManners;
 	
@@ -62,7 +62,7 @@ public class Review {
 	public void modify(String pictureUrl, List<GoodManner> goodManners, List<BadManner> badManners, String contents) {
 		this.goodManners = goodManners;
 		this.badManners = badManners;
-		this.comment = Comment.of(pictureUrl, contents, this.comment.isIspurchaser());
+		this.comment = Comment.of(pictureUrl, contents, this.comment.getTown(), this.comment.isIspurchaser());
 	}
 
 	

@@ -31,7 +31,7 @@ public class ReviewUpdateServiceImpl implements ReviewUpdateService{
 		Review review = this.reviewRepository.findById(ReviewId.of(dto.getReviewId())).orElseThrow(NoSearchReviewException::new);
 		
 		if(!review.getSenderId().getId().equals(authId)) {
-			throw new NoMatchSenderException();
+			throw new NoMatchSenderException(); 
 		}
 		
 		String pictureUrl;
