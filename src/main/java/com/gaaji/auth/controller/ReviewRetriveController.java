@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.gaaji.auth.applicationservice.ReviewRetriveService;
 import com.gaaji.auth.controller.dto.CommentRetrieveResponse;
+import com.gaaji.auth.controller.dto.MannerRetrieveResponse;
 import com.gaaji.auth.controller.dto.ReviewRetrieveResponse;
 import com.gaaji.auth.domain.Review;
 
@@ -36,4 +37,9 @@ public class ReviewRetriveController {
 		return ResponseEntity.ok(dto);
 		}
 	
+	@GetMapping("/manner")
+	private ResponseEntity<MannerRetrieveResponse> retriveManner(@RequestHeader(HttpHeaders.AUTHORIZATION) String authId, @RequestBody String userId) {
+		MannerRetrieveResponse dto = this.reviewRetriveService.retriveManner(authId, userId);
+		return ResponseEntity.ok(dto);
+		}
 }
