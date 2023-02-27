@@ -43,12 +43,12 @@ public class Review {
 	private AuthId receiverId;
 	
 	@ElementCollection
-    @CollectionTable(name = "goodManner", 
+    @CollectionTable(name = "goodManners", 
         joinColumns = @JoinColumn(name = "reviewId"))
     private List<GoodManner> goodManners;
 	
 	@ElementCollection
-    @CollectionTable(name = "badManner", 
+    @CollectionTable(name = "badManners", 
         joinColumns = @JoinColumn(name = "reviewId"))
     private List<BadManner> badManners;
 	

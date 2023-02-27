@@ -14,7 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gaaji.auth.applicationservice.ReviewRetriveService;
 import com.gaaji.auth.applicationservice.ReviewUpdateService;
+import com.gaaji.auth.controller.dto.BadMannerCount;
 import com.gaaji.auth.controller.dto.CommentRetrieveResponse;
+import com.gaaji.auth.controller.dto.GoodMannerCount;
+import com.gaaji.auth.controller.dto.MannerRetrieveResponse;
 import com.gaaji.auth.controller.dto.ReviewRetrieveResponse;
 import com.gaaji.auth.controller.dto.ReviewUpdateRequest;
 import com.gaaji.auth.domain.Auth;
@@ -117,6 +120,54 @@ public class ReviewRetriveServiceTest {
 	assertThat(newReview.getPictureUrl()).isEqualTo("사진");
 	assertThat(newReview.isIspurchaser()).isEqualTo(true);
 
+	}
+	
+	@Test
+	void 매너조회서비스 (){
+	List<GoodManner> good = new ArrayList<GoodManner>();
+	good.add(GoodManner.gm1);
+	good.add(GoodManner.gm2);
+	
+	List<BadManner> bad = new ArrayList<BadManner>();
+	bad.add(BadManner.bm2);
+	bad.add(BadManner.bm5);
+	
+	List<GoodManner> good1 = new ArrayList<GoodManner>();
+	good1.add(GoodManner.gm1);
+	good1.add(GoodManner.gm3);
+	
+	List<BadManner> bad1 = new ArrayList<BadManner>();
+	bad1.add(BadManner.bm2);
+	bad1.add(BadManner.bm3);
+	bad1.add(BadManner.bm5);
+	
+	Review review = Review.of(ReviewId.of("review"), PostId.of("post"), AuthId.of("sender"), AuthId.of("receiver"), good, bad, Comment.of("사진", "내용", "남가좌동", true));
+	Review review1 = Review.of(ReviewId.of("review1"), PostId.of("post1"), AuthId.of("sender"), AuthId.of("receiver"), good, bad1, Comment.of("사진", null, "남가좌동", true));
+	Review review2 = Review.of(ReviewId.of("review2"), PostId.of("post2"), AuthId.of("sender1"), AuthId.of("receiver"), good1, bad, Comment.of("사진", "내용1", "남가좌동", false));
+
+	this.jpaReviewRepository.save(review);
+	this.jpaReviewRepository.save(review1);
+	this.jpaReviewRepository.save(review2);		
+	
+
+	MannerRetrieveResponse reviewList = this.reviewRetriveService.retriveManner("receiver", "receiver");
+	
+	
+	List<GoodMannerCount> goodMannerCount = reviewList.getGoodMannerCount();
+	assertThat(goodMannerCount.get(0).getGoodManners()).isEqualTo(GoodManner.gm1);
+	assertThat(goodMannerCount.get(0).getCount()).isEqualTo(3);
+	assertThat(goodMannerCount.get(1).getGoodManners()).isEqualTo(GoodManner.gm2);
+	assertThat(goodMannerCount.get(1).getCount()).isEqualTo(2);
+	assertThat(goodMannerCount.get(2).getGoodManners()).isEqualTo(GoodManner.gm3);
+	assertThat(goodMannerCount.get(2).getCount()).isEqualTo(1);
+	
+	List<BadMannerCount> badMannerCount = reviewList.getBadMannerCount();
+	assertThat(badMannerCount.get(0).getBadManner()).isEqualTo(BadManner.bm2);
+	assertThat(badMannerCount.get(0).getCount()).isEqualTo(3);
+	assertThat(badMannerCount.get(1).getBadManner()).isEqualTo(BadManner.bm5);
+	assertThat(badMannerCount.get(1).getCount()).isEqualTo(3);
+	assertThat(badMannerCount.get(2).getBadManner()).isEqualTo(BadManner.bm3);
+	assertThat(badMannerCount.get(2).getCount()).isEqualTo(1);
 	}
 	
 }
