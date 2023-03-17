@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    group:
+      "default":
+        - "single"
+      "single":
+        - "single"
+        - "redis-local"
+      "local":
+        - "local"
+      "docker":
+        - "docker"
+      "prod" :
+  application:
+    name: auth-service
+  config:
+    import:
+      - secret.yml
+      - oauth.yml
+      - kafka.yml
+      - redis.yml
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
