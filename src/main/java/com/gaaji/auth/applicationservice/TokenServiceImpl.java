@@ -1,6 +1,7 @@
 package com.gaaji.auth.applicationservice;
 
 import com.gaaji.auth.controller.dto.TokenResponse;
+import com.gaaji.auth.exception.AuthIdNotFoundException;
 import com.gaaji.auth.jwt.JwtProvider;
 import com.gaaji.auth.repository.AuthRepository;
 import io.jsonwebtoken.Claims;
@@ -36,7 +37,8 @@ public class TokenServiceImpl implements TokenService{
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
         String authId = ops.get(refreshToken);
 
-        authRepository.findById(authId);
+        authRepository.findById(authId)
+                .orElseThrow(AuthIdNotFoundException::new);
         return jwtProvider.createAccessToken(authId);
     }
 

@@ -1,5 +1,8 @@
 package com.gaaji.auth.applicationservice;
 
+import com.gaaji.auth.adaptor.KafkaProducer;
+import com.gaaji.auth.event.Events;
+import com.gaaji.auth.event.NicknameChangedEvent;
 import com.gaaji.auth.domain.Auth;
 import com.gaaji.auth.exception.AuthIdNotFoundException;
 import com.gaaji.auth.repository.AuthRepository;
@@ -21,5 +24,6 @@ public class NicknameRegisterServiceImpl implements NicknameRegisterService{
                 .orElseThrow(AuthIdNotFoundException::new);
 
         auth.registerNickname(nickname);
+        Events.raise(new NicknameChangedEvent(authId, nickname));
     }
 }
